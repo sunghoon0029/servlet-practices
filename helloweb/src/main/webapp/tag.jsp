@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,7 +50,10 @@
 		문장입니다.~~<br/>
 	</p>
 	
-	<a href="hello.jsp">hello로 가기</a>
+	<a href="hello.jsp?name=조성훈">hello로 가기1</a>
+	<br/>
+	<a href="/helloweb/hello?name=조성훈">hello로 가기2</a>
+	<br/>
 	<a href="form.jsp">폼으로 가기</a>
 	
 	
