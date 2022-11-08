@@ -62,12 +62,11 @@ public class EmaillistDao {
 	
 	public List<EmaillistVo> findAll() {
 		List<EmaillistVo> result = new ArrayList<>();
-		
+	
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-				
-				
+		
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			
@@ -77,9 +76,9 @@ public class EmaillistDao {
 			stmt = conn.createStatement();
 			
 			String sql = 
-					" select first_name, last_name, email" +
-					"   from emaillist" +
-					" order by no desc";
+				"   select first_name, last_name, email" + 
+			    "     from emaillist" + 
+				" order by no desc";
 			
 			rs = stmt.executeQuery(sql);
 			while(rs.next()) {
@@ -104,17 +103,19 @@ public class EmaillistDao {
 				if(rs != null) {
 					rs.close();
 				}
+				
 				if(stmt != null) {
 					stmt.close();
 				}
+				
 				if(conn != null) {
 					conn.close();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-	
+		}		
+		
 		return result;
 	}
 }
