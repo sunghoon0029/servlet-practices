@@ -38,8 +38,8 @@ public class GuestbookVo {
 	}
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return "GuestbookVo [no=" + no + ", name=" + name + ", contents=" + contents + ", password=" + password
+				+ ", regDate=" + regDate + "]";
 	}
 	
 

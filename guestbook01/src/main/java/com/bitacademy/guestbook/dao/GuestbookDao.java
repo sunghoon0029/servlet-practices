@@ -11,6 +11,42 @@ import java.util.List;
 import com.bitacademy.guestbook.vo.GuestbookVo;
 
 public class GuestbookDao {
+	public Boolean deleteByNoAndPassword(Long no, String password) {
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			
+			String sql = "delete from guestbook where no = ? and password = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, no);
+			pstmt.setString(2, password);
+			
+			int count = pstmt.executeUpdate();
+			
+			result = count == 1;
+		} catch (SQLException e) {
+			System.out.println("Error:" + e);
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;		
+	}
+	
 	public Boolean insert(GuestbookVo vo) {
 		boolean result = false;
 		
@@ -18,29 +54,19 @@ public class GuestbookDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			//1. JDBC Driver Class Loading
-			Class.forName("org.mariadb.jdbc.Driver");
+			conn = getConnection();
 			
-			//2. 연결하기
-			String url = "jdbc:mysql://127.0.0.1:3306/webdb?charset=utf8";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
+			String sql = "insert into guestbook values(null, ?, ?, ?, now())";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getPassword());
+			pstmt.setString(3, vo.getContents());
 			
-			//3. Statement 생성
-			pstmt = conn.PreparedStatement(sql);
-			
-			//4. SQL 실행
-			String sql = 
-				" insert" +
-				"   into emaillist" +
-				" values (null, '" + vo.getFirstName() + "', '" + vo.getLastName() + "', '" + vo.getEmail() + "')";
-			
-			int count = pstmt.executeUpdate(sql);
+			int count = pstmt.executeUpdate();
 			
 			//5. 결과 처리
 			result = count == 1;
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
 		} catch (SQLException e) {
 			System.out.println("Error:" + e);
 		} finally {
@@ -62,26 +88,21 @@ public class GuestbookDao {
 	
 	public List<GuestbookVo> findAll() {
 		List<GuestbookVo> result = new ArrayList<>();
-		
+	
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-				
-				
+		
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
+			conn = getConnection();
 			
-			String url = "jdbc:mysql://127.0.0.1:3306/webdb?charset=utf8";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
+			String sql =
+				"    select no, name, contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s')" + 
+				"      from guestbook" + 
+				"  order by reg_date desc";
+			pstmt = conn.prepareStatement(sql);
 			
-			pstmt = conn.createStatement();
-			
-			String sql = 
-					" select first_name, last_name, email" +
-					"   from emaillist" +
-					" order by no desc";
-			
-			rs = pstmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Long no = rs.getLong(1);
 				String name = rs.getString(2);
@@ -97,8 +118,6 @@ public class GuestbookDao {
 				result.add(vo);
 			}
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
 		} catch (SQLException e) {
 			System.out.println("Error:" + e);
 		} finally {
@@ -106,17 +125,34 @@ public class GuestbookDao {
 				if(rs != null) {
 					rs.close();
 				}
-				if(stmt != null) {
+				
+				if(pstmt != null) {
 					pstmt.close();
 				}
+				
 				if(conn != null) {
 					conn.close();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-	
+		}		
+		
 		return result;
+	}
+	
+	private Connection getConnection() throws SQLException {
+		Connection conn = null;
+
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+			
+			String url = "jdbc:mysql://127.0.0.1:3306/webdb?charset=utf8";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+		} catch (ClassNotFoundException e) {
+			System.out.println("드라이버 로딩 실패:" + e);
+		} 
+		
+		return conn;
 	}
 }
