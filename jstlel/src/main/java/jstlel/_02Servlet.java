@@ -35,7 +35,7 @@ public class _02Servlet extends HttpServlet {
 		vo2.setName("둘리2");
 		request.getSession().setAttribute("vo", vo2);
 		
-		request.getRequestDispatcher("?WEB-INF/views/02.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/02.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

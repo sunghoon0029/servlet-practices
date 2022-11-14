@@ -24,6 +24,13 @@
 		} else if("green".equals(color)) {
 	%>
 		<h1 style="color:#00ff00">Hello Word</h1>
-	<h1>Hello World</h1>
+	<%
+		} else {
+	%>
+		<h1>Hello World</h1>
+	<%
+		}
+	%>
+	
 </body>
 </html>

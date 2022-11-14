@@ -23,7 +23,7 @@
 	<table border='1' cellspacing="0">
 		<c:forEach begin='0' end='${row-1 }' step='1' var='r'>
 			<tr>
-				<c:forEach begin='0' end='${col-1 }' step='1' var='r'>
+				<c:forEach begin='0' end='${col-1 }' step='1' var='c'>
 					<th>cell(${c }, ${r })</th>
 				</c:forEach>
 			</tr>

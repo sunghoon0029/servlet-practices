@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class _01Servlet
- */
 public class _01Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -24,7 +24,7 @@
 				<%
 					for(int j = 0; j < nCol; j++) {
 				%>
-				<th>cell(<%=j %>, <%=i %>)</th>
+					<th>cell(<%=j %>, <%=i %>)</th>
 				<%
 					}
 				%>
