@@ -23,17 +23,28 @@ public class GuestbookController extends HttpServlet {
 		if("deleteform".equals(action)) {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/deleteform.jsp");
 			rd.forward(request, response);
+			
 		} else if("delete".equals(action)) {
 			String password = request.getParameter("password");
-			String sno = request.getParameter("no");
+			String no = request.getParameter("no");
 			
-			GuestbookVo vo = new GuestbookVo();
-			vo.setPassword(password);
-			
-			new GuestbookDao().deleteByNoAndPassword(no, password);
+			new GuestbookDao().deleteByNoAndPassword(Long.parseLong(no), password);
 			
 			response.sendRedirect(request.getContextPath() + "/guestbook");
-		} else {
+		}  else if("add".equals(action)) {
+			String name = request.getParameter("name");
+			String password = request.getParameter("password");
+			String contents = request.getParameter("contents");
+			
+			GuestbookVo vo = new GuestbookVo();
+			vo.setName(name);
+			vo.setPassword(password);
+			vo.setContents(contents);
+			
+			new GuestbookDao().insert(vo);
+			
+			response.sendRedirect(request.getContextPath() + "/guestbook");
+		}else {
 			List<GuestbookVo> list = new GuestbookDao().findAll();
 			
 			request.setAttribute("list", list);
